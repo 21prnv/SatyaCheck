@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Single-Click Website Scraper",
+  "name": "SatyaCheck",
   "version": "1.0",
-  "description": "Scrape website data with a single click",
+  "description": "SatyaCheck is a Chrome extension that helps you check the authenticity of news articles and social media posts.",
   "host_permissions": ["<all_urls>"],
   "permissions": ["activeTab", "storage", "downloads", "scripting"],
   "background": {
