@@ -15,7 +15,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/sections/HeroSection";
 import Dashboard from "@/components/sections/Dashboard";
-import HowItWorks from "@/components/sections/HowItWorks";
+import HowItWorks from "@/components/sections/HowitWorks";
 import CtaSection from "@/components/sections/CtaSection";
 import NewsSection from "@/components/sections/NewsSection";
 import About from "@/components/sections/About";

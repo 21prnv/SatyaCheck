@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation"; // <-- Change from "next/router" to
 import { useState, useEffect, SetStateAction } from "react";
 import {
   AlertTriangle,
-  ArrowRight,
-  ArrowUp,
   CheckCircle,
   Download,
   Info,
@@ -28,7 +26,7 @@ import { staggerContainer, fadeIn, textVariant } from "@/utils/motion";
 import HeroSection from "@/components/sections/HeroSection";
 import Dashboard from "@/components/sections/Dashboard";
 
-const HowItWorks = () => {
+const HowitWorks = () => {
   return (
     <section className="bg-gradient-to-b from-white to-blue-50 py-24 relative overflow-hidden">
       <motion.div
@@ -121,4 +119,4 @@ const HowItWorks = () => {
   );
 };
 
-export default HowItWorks;
+export default HowitWorks;
