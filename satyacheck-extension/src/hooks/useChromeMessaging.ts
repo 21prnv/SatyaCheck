@@ -9,7 +9,7 @@ export const useChromeMessaging = () => {
   const [scrapedData, setScrapedData] = useState<ScrapedData | null>(null);
   const [status, setStatus] = useState<StatusState>({
     type: "idle",
-    message: "Ready to scrape",
+    message: "Ready to analyze",
   });
 
   // Check if content script is ready when the popup opens
@@ -62,7 +62,7 @@ export const useChromeMessaging = () => {
   // Inside the scrapeWebsite function
   const scrapeWebsite = useCallback(
     async (options: ScrapeOptions) => {
-      setStatus({ type: "loading", message: "Scraping..." });
+      setStatus({ type: "loading", message: "Analyzing..." });
 
       try {
         const tabs = await chrome.tabs.query({
@@ -111,7 +111,7 @@ export const useChromeMessaging = () => {
             setScrapedData(geminiResponse);
             setStatus({
               type: "success",
-              message: "Data scraped and analyzed successfully!",
+              message: "Data analyzed successfully!",
             });
           } else if (response && response.error) {
             setStatus({ type: "error", message: `Error: ${response.error}` });
@@ -131,47 +131,10 @@ export const useChromeMessaging = () => {
     [contentScriptReady]
   );
 
-  const downloadData = useCallback(async () => {
-    if (!scrapedData) {
-      setStatus({ type: "error", message: "No data to download" });
-      return;
-    }
-
-    try {
-      // Format the data as JSON
-      const dataStr = JSON.stringify(scrapedData, null, 2);
-
-      // Create a blob and download it
-      const blob = new Blob([dataStr], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-
-      // Generate a filename based on the page title
-      //   let filename = scrapedData.title
-      //     ? scrapedData.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()
-      //     : "scraped_data";
-
-      //   filename += "_" + new Date().toISOString().slice(0, 10) + ".json";
-
-      await chrome.downloads.download({
-        url: url,
-        // filename: filename,
-        saveAs: true,
-      });
-
-      setStatus({ type: "success", message: "Download started!" });
-    } catch (error: any) {
-      setStatus({
-        type: "error",
-        message: `Download error: ${error.message}`,
-      });
-    }
-  }, [scrapedData]);
-
   return {
     contentScriptReady,
     scrapedData,
     status,
-    scrapeWebsite,
-    downloadData,
+    scrapeWebsite
   };
 };

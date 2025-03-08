@@ -21,7 +21,7 @@ const ScrapeOptions: React.FC<ScrapeOptionsProps> = ({ onScrape }) => {
         className="mt-4 w-full bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white text-sm font-medium py-1.5 px-3 rounded transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed"
         disabled={!options.text}
       >
-        Scrape Page
+        Analyze Page
       </button>
     </div>
   );
