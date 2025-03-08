@@ -7,9 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
-import ReactMarkdown from "react-markdown";
 import { Toaster } from "@/components/ui/sonner";
-import { createClient } from '@supabase/supabase-js';
+import { createSupabaseClient } from '@/utils/supabaseClient';
 import { toast } from "sonner";
 
 
@@ -60,10 +59,7 @@ export default function App() {
     setIsSaving(true);
     
     try {
-      const supabase = createClient(
-        "https://exgdnzhsiwtguvwvjsqc.supabase.co",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4Z2RuemhzaXd0Z3V2d3Zqc3FjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE0MzE5OTYsImV4cCI6MjA1NzAwNzk5Nn0.-yYNdu1Uh-Jr5KFAl1emilpMsqGnH_cXkzEBAaqYIZM"
-      );
+      const supabase = await createSupabaseClient();
   
       const newsEntry: NewsEntry = {
         isFake: scrapedData.fake.toString(),
@@ -92,7 +88,7 @@ export default function App() {
         
         // Update status for success
         status.type = 'success';
-        status.message = 'Successfully shared to news database!';
+        status.message = 'Successfull!';
       }
   
     } catch (error) {
@@ -106,265 +102,244 @@ export default function App() {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 p-4 md:p-6">
-        <Card className="mx-auto max-w-3xl border-none shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-t-lg">
-            <CardTitle className="flex items-center text-2xl font-bold">
-              <motion.div
-                initial={{ rotate: 0 }}
-                animate={{ rotate: 360 }}
-                transition={{
-                  duration: 2,
-                  repeat: Number.POSITIVE_INFINITY,
-                  ease: "linear",
-                  repeatDelay: 5,
-                }}
-                className="mr-2"
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+      <div className="h-[600px] w-[400px] bg-gradient-to-br from-blue-50 via-white to-purple-50 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
+        <Card className="min-h-full border-none">
+          <CardHeader className="bg-gradient-to-r from-blue-600 to-violet-600 text-white sticky top-0 z-50 py-4">
+            <CardTitle className="flex items-center justify-between text-xl">
+              <div className="flex items-center gap-2">
+                <motion.div
+                  initial={{ scale: 1 }}
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{
+                    duration: 2,
+                    repeat: Number.POSITIVE_INFINITY,
+                    ease: "easeInOut",
+                  }}
                 >
-                  <path
-                    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                    stroke="white"
-                    strokeWidth="2"
-                  />
-                  <path
-                    d="M12 8V12L15 15"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </motion.div>
-              Satya Check AI
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="drop-shadow"
+                  >
+                    <path
+                      d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M12 8L10 12H14L12 16"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </motion.div>
+                Satya Check AI
+              </div>
+              <Badge variant="secondary" className="bg-white/20 text-white hover:bg-white/30">
+                v1.0
+              </Badge>
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-6">
-            <ScrapeOptions onScrape={scrapeWebsite} />
 
-            {/* Analysis Animation */}
+          <CardContent className="p-3 space-y-3">
+            <div className="flex justify-center">
+              <ScrapeOptions onScrape={scrapeWebsite} />
+            </div>
+
+            {/* Loading Animation */}
             {status.type === "loading" && (
-              <Card className="mt-6 overflow-hidden border-none bg-white/80 shadow-md">
-                <CardContent className="p-4">
-                  <div className="mb-3 flex justify-between">
-                    <span className="text-sm font-medium text-indigo-700">
-                      Analysis in progress
-                    </span>
-                    <span className="text-xs text-indigo-500">
-                      {currentStep + 1}/{analysisSteps.length}
-                    </span>
-                  </div>
-                  <Progress
-                    value={((currentStep + 1) / analysisSteps.length) * 100}
-                    className="h-2 bg-indigo-100"
-                  />
-
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={currentStep}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.4 }}
-                      className="mt-4 flex items-center"
-                    >
-                      <motion.div
-                        animate={{
-                          scale: [1, 1.1, 1],
-                          opacity: [0.7, 1, 0.7],
-                        }}
-                        transition={{
-                          duration: 1.5,
-                          repeat: Number.POSITIVE_INFINITY,
-                          ease: "easeInOut",
-                        }}
-                        className="mr-3 h-3 w-3 rounded-full bg-indigo-500"
-                      />
-                      <span className="text-base font-medium text-gray-700">
-                        {analysisSteps[currentStep]}
-                      </span>
-                    </motion.div>
-                  </AnimatePresence>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Display Analysis Results */}
-            {scrapedData && (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="mt-6 space-y-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="mt-2"
               >
-                <div className="rounded-lg bg-white p-6 shadow-md">
-                  <h2 className="mb-6 text-2xl font-bold text-gray-800">
-                    Analysis Results
-                  </h2>
-
-                  {/* Verdict Badge */}
-                  <div className="mb-6 flex justify-center">
-                    <Badge
-                      className={`px-4 py-2 text-lg font-semibold ${
-                        scrapedData.real_percentage > 70
-                          ? "bg-green-100 text-green-800 hover:bg-green-100"
-                          : scrapedData.real_percentage > 40
-                          ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
-                          : "bg-red-100 text-red-800 hover:bg-red-100"
-                      }`}
-                    >
-                      {scrapedData.real_percentage > 70
-                        ? "Likely Authentic"
-                        : scrapedData.real_percentage > 40
-                        ? "Potentially Misleading"
-                        : "Likely False"}
-                    </Badge>
-                  </div>
-
-                  {/* Percentage Bars */}
-                  <div className="space-y-4">
-                    <div>
-                      <div className="mb-1 flex justify-between">
-                        <p className="text-sm font-medium text-gray-700">
-                          Authenticity Score
-                        </p>
-                        <p className="text-sm font-bold text-green-600">
-                          {scrapedData.real_percentage}%
-                        </p>
-                      </div>
-                      <Progress
-                        value={scrapedData.real_percentage}
-                        className="h-2.5 bg-gray-100"
-                        indicatorClassName="bg-gradient-to-r from-green-400 to-green-600"
-                      />
+                <Card className="border border-blue-100 bg-blue-50/30">
+                  <CardContent className="p-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-blue-700">
+                        Analyzing content...
+                      </span>
+                      <Badge className="bg-blue-100 text-blue-700">
+                        {currentStep + 1}/{analysisSteps.length}
+                      </Badge>
                     </div>
-                    <div>
-                      <div className="mb-1 flex justify-between">
-                        <p className="text-sm font-medium text-gray-700">
-                          Misinformation Score
-                        </p>
-                        <p className="text-sm font-bold text-red-600">
-                          {scrapedData.fake_percentage}%
-                        </p>
-                      </div>
-                      <Progress
-                        value={scrapedData.fake_percentage}
-                        className="h-2.5 bg-gray-100"
-                        indicatorClassName="bg-gradient-to-r from-red-400 to-red-600"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Explanation with Markdown */}
-                  <div className="mt-6">
-                    <h3 className="mb-3 text-xl font-semibold text-gray-800">
-                      Explanation
-                    </h3>
-                    <div className="rounded-lg bg-gray-50 p-4 text-gray-700">
-                      <ReactMarkdown>{scrapedData.explanation}</ReactMarkdown>
-                    </div>
-                  </div>
-
-
-                  {/* Related Links */}
-                  {scrapedData.related_links &&
-                    scrapedData.related_links.length > 0 && (
-                      <div className="mt-6">
-                        <h3 className="mb-3 text-xl font-semibold text-gray-800">
-                          Related Links
-                        </h3>
-                        <div className="flex flex-wrap gap-2">
-                          {scrapedData.related_links.map((link, index) => (
-                            <a
-                              key={index}
-                              href={link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center rounded-md bg-indigo-50 px-3 py-2 text-sm text-indigo-700 transition-colors hover:bg-indigo-100"
-                            >
-                              <ExternalLink className="mr-1 h-3 w-3" />
-                              Source {index + 1}
-                            </a>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                  {/* Cross-Check Sources */}
-                  {scrapedData.cross_check_sources &&
-                    scrapedData.cross_check_sources.length > 0 && (
-                      <div className="mt-6">
-                        <h3 className="mb-3 text-xl font-semibold text-gray-800">
-                          Cross-Check Sources
-                        </h3>
-                        <ul className="space-y-2 rounded-lg bg-gray-50 p-4">
-                          {scrapedData.cross_check_sources.map(
-                            (source, index) => (
-                              <li key={index} className="text-gray-700">
-                                • {source}
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      </div>
-                    )}
-                </div>
-
-                
-                <div className="mt-6 flex justify-end">
-                      <motion.button
-                        onClick={handleShareToNews}
-                        disabled={isSaving}
-                        className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                    <Progress
+                      value={((currentStep + 1) / analysisSteps.length) * 100}
+                      className="h-1.5"
+                    />
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={currentStep}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="mt-2 text-sm text-blue-600"
                       >
-                        {isSaving ? 'Saving...' : 'Share to News'}
-                      </motion.button>
-                  </div>
+                        {analysisSteps[currentStep]}
+                      </motion.div>
+                    </AnimatePresence>
+                  </CardContent>
+                </Card>
               </motion.div>
             )}
 
-          {generatedUrl && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-4 flex items-center space-x-2"
-            >
-              <ExternalLink className="h-4 w-4 text-blue-600" />
-              <a
-                href={generatedUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline text-sm"
+            {/* Results Section */}
+            {scrapedData && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="space-y-3"
               >
-                Share News Post
-              </a>
-            </motion.div>
-          )}
+                {/* Verdict */}
+                <div className="flex justify-center">
+                  <Badge
+                    className={`px-4 py-2 text-base font-medium ${
+                      scrapedData.real_percentage > 70
+                        ? "bg-emerald-100 text-emerald-700 border-emerald-200"
+                        : scrapedData.real_percentage > 40
+                        ? "bg-amber-100 text-amber-700 border-amber-200"
+                        : "bg-rose-100 text-rose-700 border-rose-200"
+                    }`}
+                  >
+                    {scrapedData.real_percentage > 70
+                      ? "✓ Likely Authentic"
+                      : scrapedData.real_percentage > 40
+                      ? "⚠ Potentially Misleading"
+                      : "✗ Likely False"}
+                  </Badge>
+                </div>
 
-          {generatedUrl && (
-            <button
-              onClick={() => {
-                navigator.clipboard.writeText(generatedUrl);
-                toast.success('Link copied to clipboard!');
-              }}
-              className="text-sm text-gray-500 hover:text-gray-700 ml-2"
-            >
-              Copy Link
-            </button>
-          )}
+                {/* Score Cards */}
+                <div className="grid grid-cols-2 gap-2">
+                  <Card className="border border-emerald-100 bg-emerald-50/30">
+                    <CardContent className="p-2">
+                      <p className="text-xs font-medium text-emerald-700">Authenticity</p>
+                      <p className="text-lg font-bold text-emerald-600">{scrapedData.real_percentage}%</p>
+                    </CardContent>
+                  </Card>
+                  <Card className="border border-rose-100 bg-rose-50/30">
+                    <CardContent className="p-2">
+                      <p className="text-xs font-medium text-rose-700">Misinformation</p>
+                      <p className="text-lg font-bold text-rose-600">{scrapedData.fake_percentage}%</p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Explanation Section */}
+                <Card className="border border-gray-100">
+                  <CardContent className="p-3">
+                    <h3 className="text-sm font-semibold text-gray-800 mb-2">
+                      Key Findings
+                    </h3>
+                    <div className="text-sm text-gray-600 space-y-1">
+                      {scrapedData.explanation.split('\n').map((point, index) => (
+                        point.trim() && (
+                          <div key={index} className="flex items-start gap-2">
+                            <span className="text-blue-600 mt-1">•</span>
+                            <p>{point.trim()}</p>
+                          </div>
+                        )
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Related Links */}
+                {scrapedData.related_links && scrapedData.related_links.length > 0 && (
+                  <Card className="border border-gray-100">
+                    <CardContent className="p-3">
+                      <h3 className="text-sm font-semibold text-gray-800 mb-2">
+                        Related Sources
+                      </h3>
+                      <div className="flex flex-wrap gap-1.5">
+                        {scrapedData.related_links.map((link, index) => (
+                          <motion.a
+                            key={index}
+                            href={link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            <ExternalLink className="w-3 h-3 mr-1" />
+                            Source {index + 1}
+                          </motion.a>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Share Button or Link Section */}
+                <div className="flex justify-end">
+                  {generatedUrl ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="flex items-center gap-2 bg-blue-50 p-2 rounded w-full"
+                    >
+                      <a
+                        href={generatedUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline flex items-center gap-1 text-sm"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        View Report
+                      </a>
+                      <div className="flex-1" />
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(generatedUrl);
+                          toast.success('Link copied!');
+                        }}
+                        className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                      >
+                        Copy Link
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <motion.button
+                      onClick={handleShareToNews}
+                      disabled={isSaving}
+                      className="bg-gradient-to-r from-blue-600 to-violet-600 text-white px-4 py-1.5 rounded text-sm font-medium disabled:opacity-50 flex items-center gap-1.5 shadow hover:shadow-md"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      {isSaving ? (
+                        <>
+                          <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 1, repeat: Infinity }}
+                          >
+                            ⏳
+                          </motion.div>
+                          Saving...
+                        </>
+                      ) : (
+                        <>
+                          <span>Share Report</span>
+                        </>
+                      )}
+                    </motion.button>
+                  )}
+                </div>
+              </motion.div>
+            )}
 
             <StatusMessage status={status} />
           </CardContent>
         </Card>
       </div>
-      <Toaster />
+      <Toaster position="bottom-center" />
     </>
   );
 }

@@ -102,7 +102,7 @@ export const useChromeMessaging = () => {
           });
 
           if (response && response.data) {
-            const { timestamp, ...filteredData } = response.data;
+            const { timestamp, url, ...filteredData } = response.data;
 
             // Send the scraped data to Gemini
             const geminiResponse = await analyzeContentWithGemini(filteredData);

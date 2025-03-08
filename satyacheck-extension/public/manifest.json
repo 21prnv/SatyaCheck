@@ -5,6 +5,9 @@
   "description": "Scrape website data with a single click",
   "host_permissions": ["<all_urls>"],
   "permissions": ["activeTab", "storage", "downloads", "scripting"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_popup": "index.html",
     "default_icon": {
