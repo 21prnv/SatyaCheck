@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useCallback, useEffect } from "react";
 import { ScrapedData, ScrapeOptions, StatusState } from "../types/types";
+import { analyzeContentWithGemini } from "../geminiClient";
 
 export const useChromeMessaging = () => {
   const [contentScriptReady, setContentScriptReady] = useState<boolean>(false);
@@ -58,6 +59,7 @@ export const useChromeMessaging = () => {
     };
   }, []);
 
+  // Inside the scrapeWebsite function
   const scrapeWebsite = useCallback(
     async (options: ScrapeOptions) => {
       setStatus({ type: "loading", message: "Scraping..." });
@@ -100,11 +102,16 @@ export const useChromeMessaging = () => {
           });
 
           if (response && response.data) {
-            const { timestamp, text, ...filteredData } = response.data;
-            setScrapedData(filteredData as ScrapedData);
+            const { timestamp, ...filteredData } = response.data;
+
+            // Send the scraped data to Gemini
+            const geminiResponse = await analyzeContentWithGemini(filteredData);
+
+            // Store the Gemini response
+            setScrapedData(geminiResponse);
             setStatus({
               type: "success",
-              message: "Data scraped successfully!",
+              message: "Data scraped and analyzed successfully!",
             });
           } else if (response && response.error) {
             setStatus({ type: "error", message: `Error: ${response.error}` });
@@ -139,15 +146,15 @@ export const useChromeMessaging = () => {
       const url = URL.createObjectURL(blob);
 
       // Generate a filename based on the page title
-      let filename = scrapedData.title
-        ? scrapedData.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()
-        : "scraped_data";
+      //   let filename = scrapedData.title
+      //     ? scrapedData.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()
+      //     : "scraped_data";
 
-      filename += "_" + new Date().toISOString().slice(0, 10) + ".json";
+      //   filename += "_" + new Date().toISOString().slice(0, 10) + ".json";
 
       await chrome.downloads.download({
         url: url,
-        filename: filename,
+        // filename: filename,
         saveAs: true,
       });
 

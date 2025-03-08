@@ -3,18 +3,17 @@ export interface ScrapeOptions {
 }
 
 export interface ScrapedData {
-  title: string;
-  url: string;
-  links?: Array<{
-    text: string;
-    href: string;
-  }>;
-  images?: Array<{
-    src: string;
-    alt: string;
-    width: number;
-    height: number;
-  }>;
+  fake: boolean;
+  real: boolean;
+  fake_percentage: number;
+  real_percentage: number;
+  explanation: string;
+  related_links: string[];
+  author_verified: boolean;
+  post_date: string;
+  subject_expertise: string;
+  media_presence: boolean;
+  cross_check_sources: string[];
 }
 
 export type StatusType = "idle" | "loading" | "success" | "error";
