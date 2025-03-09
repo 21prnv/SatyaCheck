@@ -1,4 +1,5 @@
 import { Shield, Github } from "lucide-react";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -33,21 +34,38 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="flex flex-col items-end">
+          <div className="flex flex-col items-end space-y-4">
             <a
               href="https://github.com/21prnv/SatyaCheck"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors duration-300 mb-4"
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors duration-300"
             >
               <Github className="h-5 w-5" />
               <span className="font-medium">View on GitHub</span>
             </a>
+            <Link
+              href="/privacy"
+              className="text-gray-600 hover:text-blue-600 transition-colors duration-300"
+            >
+              Privacy Policy
+            </Link>
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-blue-200 text-center text-blue-600">
-          <p>© {new Date().getFullYear()} Satyacheck AI. All rights reserved.</p>
+        <div className="mt-12 pt-6 border-t border-blue-200 text-center">
+          <div className="flex justify-center space-x-6 mb-4">
+            <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
+              Home
+            </Link>
+            <Link href="/docs" className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
+              Documentation
+            </Link>
+            <Link href="/privacy" className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
+              Privacy
+            </Link>
+          </div>
+          <p className="text-blue-600">© {new Date().getFullYear()} Satyacheck AI. All rights reserved.</p>
         </div>
       </div>
     </footer>
