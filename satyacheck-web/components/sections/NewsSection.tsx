@@ -59,7 +59,7 @@ const NewsSection = ({ news }: NewsProps) => {
   const [currentUser, setCurrentUser] = useState<any>(null);
   const supabase = createClient();
   const router = useRouter();
-  const ITEMS_PER_PAGE = 8;
+  const ITEMS_PER_PAGE = 3;
 
   useEffect(() => {
     const fetchUser = async () => {
