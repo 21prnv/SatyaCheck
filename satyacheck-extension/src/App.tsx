@@ -202,12 +202,12 @@ export default function App() {
                 {/* Verdict */}
                 <div className="flex justify-center">
                   <Badge
-                    className={`px-4 py-2 text-base font-medium ${
+                    className={`px-4 py-2 text-base font-medium hover:bg-opacity-90 ${
                       scrapedData.real_percentage > 70
-                        ? "bg-emerald-100 text-emerald-700 border-emerald-200"
+                        ? "bg-emerald-100 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
                         : scrapedData.real_percentage > 40
-                        ? "bg-amber-100 text-amber-700 border-amber-200"
-                        : "bg-rose-100 text-rose-700 border-rose-200"
+                        ? "bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-100"
+                        : "bg-rose-100 text-rose-700 border-rose-200 hover:bg-rose-100"
                     }`}
                   >
                     {scrapedData.real_percentage > 70
@@ -311,7 +311,13 @@ export default function App() {
                       <button
                         onClick={() => {
                           navigator.clipboard.writeText(generatedUrl);
-                          toast.success("Link copied!");
+                          toast.success("Link copied!", {
+                            style: {
+                              backgroundColor: "white",
+                              color: "#1e40af",
+                              border: "1px solid #e2e8f0"
+                            }
+                          });
                         }}
                         className="text-blue-600 hover:text-blue-700 text-sm font-medium"
                       >
