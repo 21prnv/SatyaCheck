@@ -32,6 +32,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supbase/client";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface NewsItem {
   id: string;
@@ -53,16 +54,42 @@ interface NewsProps {
   news: NewsItem[];
 }
 
+const NewsSkeletonCard = () => (
+  <Card className="h-full flex flex-col border-0 bg-white/80 backdrop-filter backdrop-blur-sm">
+    <div className="relative">
+      <Skeleton className="w-full h-48" />
+    </div>
+    <CardContent className="p-5 flex flex-col gap-4 flex-grow">
+      <div className="flex items-center justify-between">
+        <Skeleton className="h-6 w-24 rounded-full" />
+        <Skeleton className="h-6 w-32 rounded-full" />
+      </div>
+      <div className="space-y-3">
+        <Skeleton className="h-6 w-full" />
+        <Skeleton className="h-6 w-3/4" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-5/6" />
+      </div>
+      <div className="flex items-center justify-between pt-3 border-t border-gray-100 mt-auto">
+        <Skeleton className="h-8 w-24 rounded-full" />
+        <Skeleton className="h-8 w-24 rounded-full" />
+      </div>
+    </CardContent>
+  </Card>
+);
+
 const NewsSection = ({ news }: NewsProps) => {
   const [votes, setVotes] = useState<{ [key: string]: string[] }>({});
   const [currentPage, setCurrentPage] = useState(1);
   const [currentUser, setCurrentUser] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const supabase = createClient();
   const router = useRouter();
-  const ITEMS_PER_PAGE = 3;
+  const ITEMS_PER_PAGE = 4;
 
   useEffect(() => {
     const fetchUser = async () => {
+      setIsLoading(true);
       const {
         data: { user },
         error,
@@ -75,13 +102,13 @@ const NewsSection = ({ news }: NewsProps) => {
           .single();
         setCurrentUser(userData);
       }
+      setIsLoading(false);
     };
     fetchUser();
   }, []);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleUpvote = async (postId: any, e: any) => {
@@ -286,227 +313,235 @@ const NewsSection = ({ news }: NewsProps) => {
         viewport={{ once: true }}
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8"
       >
-        {news
-          .slice(
-            (currentPage - 1) * ITEMS_PER_PAGE,
-            currentPage * ITEMS_PER_PAGE
-          )
-          .map((newsItem: NewsItem, index: number) => {
-            const isFake =
-              newsItem.isFake === "true" ||
-              Number(newsItem.fake_percentage) > 50;
-            const isHighlyCredible = Number(newsItem.real_percentage) > 80;
-            const isMisleading = !isFake && !isHighlyCredible;
-            const category = getNewsCategory(newsItem);
-            const reasonsText = newsItem.reasons_for_determination || "";
-            const firstSentenceEnd = reasonsText.indexOf(". ");
-            const title =
-              firstSentenceEnd > 0
-                ? reasonsText.substring(0, firstSentenceEnd + 1)
-                : "News Analysis";
-            const description = reasonsText;
+        {isLoading ? (
+          // Show skeleton cards while loading
+          Array.from({ length: ITEMS_PER_PAGE }).map((_, index) => (
+            <motion.div
+              key={`skeleton-${index}`}
+              variants={fadeIn("up", "spring", index * 0.15, 0.65)}
+            >
+              <NewsSkeletonCard />
+            </motion.div>
+          ))
+        ) : (
+          // Show actual news cards
+          news
+            .slice(
+              (currentPage - 1) * ITEMS_PER_PAGE,
+              currentPage * ITEMS_PER_PAGE
+            )
+            .map((newsItem: NewsItem, index: number) => {
+              const isFake =
+                newsItem.isFake === "true" ||
+                Number(newsItem.fake_percentage) > 50;
+              const isHighlyCredible = Number(newsItem.real_percentage) > 80;
+              const isMisleading = !isFake && !isHighlyCredible;
+              const category = getNewsCategory(newsItem);
+              const reasonsText = newsItem.reasons_for_determination || "";
+              const firstSentenceEnd = reasonsText.indexOf(". ");
+              const title =
+                firstSentenceEnd > 0
+                  ? reasonsText.substring(0, firstSentenceEnd + 1)
+                  : "News Analysis";
+              const description = reasonsText;
 
-            return (
-              <motion.div
-                key={newsItem.id}
-                variants={fadeIn("up", "spring", index * 0.15, 0.65)}
-              >
-                <Card
-                  className={`group h-full flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer overflow-hidden border-0 bg-white/80 backdrop-filter backdrop-blur-sm ${
-                    isFake
-                      ? "hover:shadow-red-100/50"
-                      : isHighlyCredible
-                      ? "hover:shadow-green-100/50"
-                      : "hover:shadow-amber-100/50"
-                  }`}
-                  onClick={() => handleCardClick(newsItem.id)}
+              return (
+                <motion.div
+                  key={newsItem.id}
+                  variants={fadeIn("up", "spring", index * 0.15, 0.65)}
                 >
-                  <div className="relative">
-                    {/* Status Badge */}
-                    <div
-                      className={`absolute top-3 left-3 z-10 rounded-full px-3 py-1.5 text-xs font-semibold text-white shadow-lg backdrop-blur-sm ${
-                        isFake
-                          ? "bg-gradient-to-r from-red-500 to-red-600"
-                          : isHighlyCredible
-                          ? "bg-gradient-to-r from-green-500 to-green-600"
-                          : "bg-gradient-to-r from-amber-500 to-amber-600"
-                      }`}
-                    >
-                      <div className="flex items-center gap-1.5">
-                        {isFake ? (
-                          <AlertTriangle className="w-3.5 h-3.5" />
-                        ) : isHighlyCredible ? (
-                          <CheckCircle className="w-3.5 h-3.5" />
-                        ) : (
-                          <Shield className="w-3.5 h-3.5" />
-                        )}
-                        <span>
-                          {isFake
-                            ? "Fake"
-                            : isHighlyCredible
-                            ? "Real"
-                            : "Misleading"}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Credibility Score */}
-                    <div
-                      className={`absolute top-3 right-3 z-10 rounded-full px-3 py-1.5 text-xs font-semibold shadow-lg backdrop-blur-sm ${
-                        isFake
-                          ? "bg-white/90 text-red-600 border border-red-100"
-                          : isHighlyCredible
-                          ? "bg-white/90 text-green-600 border border-green-100"
-                          : "bg-white/90 text-amber-600 border border-amber-100"
-                      }`}
-                    >
-                      <div className="flex items-center gap-1.5">
-                        <TrendingUp className="w-3.5 h-3.5" />
-                        <span className="font-bold">
-                          {isFake
-                            ? newsItem.fake_percentage
-                            : newsItem.real_percentage}
-                          %
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Image Section */}
-                    <div className="w-full h-48 overflow-hidden">
+                  <Card
+                    className={`group h-full flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer overflow-hidden border-0 bg-white/80 backdrop-filter backdrop-blur-sm ${
+                      isFake
+                        ? "hover:shadow-red-100/50"
+                        : isHighlyCredible
+                        ? "hover:shadow-green-100/50"
+                        : "hover:shadow-amber-100/50"
+                    }`}
+                    onClick={() => handleCardClick(newsItem.id)}
+                  >
+                    <div className="relative">
+                      {/* Status Badge */}
                       <div
-                        className={`absolute inset-0 z-10 ${
+                        className={`absolute top-3 left-3 z-10 rounded-full px-3 py-1.5 text-xs font-semibold text-white shadow-lg backdrop-blur-sm ${
                           isFake
-                            ? "bg-gradient-to-t from-red-900/70 via-transparent to-transparent"
+                            ? "bg-gradient-to-r from-red-500 to-red-600"
                             : isHighlyCredible
-                            ? "bg-gradient-to-t from-green-900/70 via-transparent to-transparent"
-                            : "bg-gradient-to-t from-amber-900/70 via-transparent to-transparent"
-                        } opacity-60 group-hover:opacity-80 transition-opacity duration-300`}
-                      ></div>
-
-                      <img
-                        src={
-                          isFake
-                            ? "https://i.pinimg.com/736x/6c/c0/08/6cc0087776f947c54ab23d9526898cfb.jpg"
-                            : "https://i.pinimg.com/736x/8b/46/0a/8b460ad19de8a97577b341308c368870.jpg"
-                        }
-                        alt={
-                          isFake
-                            ? "Fake news illustration"
-                            : "Verified news illustration"
-                        }
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                    </div>
-                  </div>
-
-                  <CardContent className="p-5 flex flex-col gap-4 flex-grow relative">
-                    {/* Category and Date */}
-                    <div className="flex items-center justify-between">
-                      <Badge
-                        className={`${getCategoryStyles(
-                          category
-                        )} px-3 py-1.5 text-xs font-medium rounded-full shadow-sm border border-current/10`}
+                            ? "bg-gradient-to-r from-green-500 to-green-600"
+                            : "bg-gradient-to-r from-amber-500 to-amber-600"
+                        }`}
                       >
-                        {category || "General"}
-                      </Badge>
-                      <div className="flex items-center gap-1.5 text-xs font-medium text-gray-500 bg-gray-50 px-3 py-1 rounded-full">
-                        <Clock className="w-3.5 h-3.5" />
-                        {formatDate(newsItem.post_date)}
+                        <div className="flex items-center gap-1.5">
+                          {isFake ? (
+                            <AlertTriangle className="w-3.5 h-3.5" />
+                          ) : isHighlyCredible ? (
+                            <CheckCircle className="w-3.5 h-3.5" />
+                          ) : (
+                            <Shield className="w-3.5 h-3.5" />
+                          )}
+                          <span>
+                            {isFake
+                              ? "Fake"
+                              : isHighlyCredible
+                              ? "Real"
+                              : "Misleading"}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Credibility Score */}
+                      <div
+                        className={`absolute top-3 right-3 z-10 rounded-full px-3 py-1.5 text-xs font-semibold shadow-lg backdrop-blur-sm ${
+                          isFake
+                            ? "bg-white/90 text-red-600 border border-red-100"
+                            : isHighlyCredible
+                            ? "bg-white/90 text-green-600 border border-green-100"
+                            : "bg-white/90 text-amber-600 border border-amber-100"
+                        }`}
+                      >
+                        <div className="flex items-center gap-1.5">
+                          <TrendingUp className="w-3.5 h-3.5" />
+                          <span className="font-bold">
+                            {isFake
+                              ? newsItem.fake_percentage
+                              : newsItem.real_percentage}
+                            %
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Image Section */}
+                      <div className="w-full h-48 overflow-hidden">
+                        <div
+                          className={`absolute inset-0 z-10 ${
+                            isFake
+                              ? "bg-gradient-to-t from-red-900/70 via-transparent to-transparent"
+                              : isHighlyCredible
+                              ? "bg-gradient-to-t from-green-900/70 via-transparent to-transparent"
+                              : "bg-gradient-to-t from-amber-900/70 via-transparent to-transparent"
+                          } opacity-60 group-hover:opacity-80 transition-opacity duration-300`}
+                        ></div>
+
+                        <img
+                          src={
+                            isFake
+                              ? "https://i.pinimg.com/736x/6c/c0/08/6cc0087776f947c54ab23d9526898cfb.jpg"
+                              : "https://i.pinimg.com/736x/8b/46/0a/8b460ad19de8a97577b341308c368870.jpg"
+                          }
+                          alt={
+                            isFake
+                              ? "Fake news illustration"
+                              : "Verified news illustration"
+                          }
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
                       </div>
                     </div>
 
-                    {/* Title and Description */}
-                    <div className="flex-grow">
-                      <h3
-                        className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 
+                    <CardContent className="p-5 flex flex-col gap-4 flex-grow relative">
+                      <div className="flex items-center justify-between">
+                        <Badge
+                          className={`${getCategoryStyles(
+                            category
+                          )} px-3 py-1.5  text-xs font-medium rounded-full shadow-sm border border-current/10`}
+                        >
+                          <h4>{(category || "General").split(' ').length > 4 ? `${(category || "General").split(' ').slice(0, 4).join(' ')}...` : category || "General"}</h4>
+                        </Badge>
+                      </div>
+
+                      {/* Title and Description */}
+                      <div className="flex-grow">
+                        <h3
+                          className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 
                         transition-colors duration-300 line-clamp-2 mt-1"
-                      >
-                        {title?.length > 80
-                          ? `${title.substring(0, 80)}...`
-                          : title || "Untitled"}
-                      </h3>
-                      <p className="text-sm text-gray-600 line-clamp-3 mt-2 mb-3">
-                        {description || "No description available"}
-                      </p>
-                    </div>
+                        >
+                          {title?.length > 80
+                            ? `${title.substring(0, 80)}...`
+                            : title || "Untitled"}
+                        </h3>
+                        <p className="text-sm text-gray-600 line-clamp-3 mt-2 mb-3">
+                          {description || "No description available"}
+                        </p>
+                      </div>
 
-                    {/* Footer: Source Verification and Voting */}
-                    <div className="flex items-center justify-between pt-3 border-t border-gray-100 mt-auto">
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            {newsItem.media_presence === "true" ? (
-                              <div className="flex items-center text-sm font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                                <CheckCircle className="h-4 w-4 mr-1.5" />
-                                Verified
-                              </div>
-                            ) : (
-                              <div className="flex items-center text-sm font-medium text-gray-500 bg-gray-50 px-3 py-1 rounded-full">
-                                <X className="h-4 w-4 mr-1.5" />
-                                Unverified
-                              </div>
-                            )}
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>
-                              {newsItem.media_presence === "true"
-                                ? "Verified Source"
-                                : "Unverified Source"}
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
+                      {/* Footer: Source Verification and Voting */}
+                      <div className="flex items-center justify-between pt-3 border-t border-gray-100 mt-auto">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              {newsItem.media_presence === "true" ? (
+                                <div className="flex items-center text-sm font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                                  <CheckCircle className="h-4 w-4 mr-1.5" />
+                                  Verified
+                                </div>
+                              ) : (
+                                <div className="flex items-center text-sm font-medium text-gray-500 bg-gray-50 px-3 py-1 rounded-full">
+                                  <X className="h-4 w-4 mr-1.5" />
+                                  Unverified
+                                </div>
+                              )}
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>
+                                {newsItem.media_presence === "true"
+                                  ? "Verified Source"
+                                  : "Unverified Source"}
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
 
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <button
-                              onClick={(e) => handleUpvote(newsItem.id, e)}
-                              className={`flex items-center gap-2 cursor-pointer rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-300 ${
-                                currentUser &&
-                                votes[newsItem.id]?.includes(currentUser?.id)
-                                  ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg hover:shadow-blue-100/50"
-                                  : "bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 border border-transparent"
-                              }`}
-                              aria-label="Vote for credibility"
-                            >
-                              <ArrowUp className="h-4 w-4" />
-                              <span>{votes[newsItem.id]?.length || 0}</span>
-                            </button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>
-                              {currentUser
-                                ? "Vote for credibility"
-                                : "Login to vote"}
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                // window.open(newsItem.url, "_blank");
-                                handleOpenSource(newsItem);
-                              }}
-                              className="flex items-center cursor-pointer gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-300 bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 border border-transparent"
-                              aria-label="Open source"
-                            >
-                              <span>Source</span>
-                            </button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Open source URL</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            );
-          })}
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <button
+                                onClick={(e) => handleUpvote(newsItem.id, e)}
+                                className={`flex items-center gap-2 cursor-pointer rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-300 ${
+                                  currentUser &&
+                                  votes[newsItem.id]?.includes(currentUser?.id)
+                                    ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg hover:shadow-blue-100/50"
+                                    : "bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 border border-transparent"
+                                }`}
+                                aria-label="Vote for credibility"
+                              >
+                                <ArrowUp className="h-4 w-4" />
+                                <span>{votes[newsItem.id]?.length || 0}</span>
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>
+                                {currentUser
+                                  ? "Vote for credibility"
+                                  : "Login to vote"}
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  // window.open(newsItem.url, "_blank");
+                                  handleOpenSource(newsItem);
+                                }}
+                                className="flex items-center cursor-pointer gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-300 bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 border border-transparent"
+                                aria-label="Open source"
+                              >
+                                <span>Source</span>
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Open source URL</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              );
+            })
+        )}
       </motion.div>
 
       {news.length > 0 && (
