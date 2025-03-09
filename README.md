@@ -13,6 +13,9 @@ SatyaCheck is a comprehensive fact-checking solution that helps users verify the
 - Source credibility assessment
 - Integration with Supabase for data persistence
 
+## How to run the Chrome Extension Locally
+
+
 ## Project Structure
 
 ```
