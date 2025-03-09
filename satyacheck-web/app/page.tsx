@@ -231,9 +231,9 @@ export default function Home() {
       <CtaSection />
 
       {/* About Section */}
-      <section id="about">
+      {/* <section id="about">
         <About />
-      </section>
+      </section> */}
 
       <Footer />
     </main>

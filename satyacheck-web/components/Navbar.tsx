@@ -32,7 +32,7 @@ export default function Navbar() {
     { name: "News", path: "/#news" },
     { name: "How It Works", path: "/#how-it-works" },
     { name: "Docs", path: "/docs" },
-    { name: "About", path: "/#about" },
+    // { name: "About", path: "/#about" },
   ];
 
   const handleNavigation = (path: string) => {
