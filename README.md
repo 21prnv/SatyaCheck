@@ -40,10 +40,22 @@ NEXT_PUBLIC_SITE_URL=your_dev_url
 
 ### Chrome Extension (.env)
 ```env
-VITE_GEMINI_API_KEY=your_gemini_api_key
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_GEMINI_API_KEY=your_gemini_api_key
 ```
+
+### Environment Variables Description
+
+#### Web Application
+- `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anonymous key
+- `NEXT_PUBLIC_SITE_URL`: Local development URL (e.g., "http://localhost:3000/")
+
+#### Chrome Extension
+- `VITE_SUPABASE_URL`: Your Supabase project URL
+- `VITE_SUPABASE_ANON_KEY`: Your Supabase anonymous key
+- `VITE_GEMINI_API_KEY`: Your Google Gemini AI API key
 
 ## Installation & Development
 

@@ -228,7 +228,7 @@ export default function PostDetailPage() {
   };
 
   const handleGoBack = () => {
-    router.back();
+    router.push('/');
   };
 
   // First, update the NewsItem interface to include votes array
