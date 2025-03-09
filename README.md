@@ -15,6 +15,7 @@ SatyaCheck is a comprehensive fact-checking solution that helps users verify the
 
 ## How to run the Chrome Extension Locally
 
+https://github.com/user-attachments/assets/743afd1e-e576-4a1e-aa21-d41426133d0c
 
 ## Project Structure
 
@@ -49,6 +50,8 @@ VITE_GEMINI_API_KEY=your_gemini_api_key
 ```
 
 ### Environment Variables Description
+
+
 
 #### Web Application
 - `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
