@@ -14,6 +14,11 @@ export async function signInWithGoogle() {
         access_type: "offline",
         prompt: "consent",
       },
+      redirectTo: `${
+        process.env.NEXT_PUBLIC_VERCEL_URL
+          ? process.env.NEXT_PUBLIC_VERCEL_URL
+          : "http://localhost:3000"
+      }`,
     },
   });
   console.log(data);

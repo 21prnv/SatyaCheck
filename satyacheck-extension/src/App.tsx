@@ -83,7 +83,7 @@ export default function App() {
 
       if (data && data.length > 0) {
         const newId = data[0].id;
-        const postUrl = `http://localhost:3000/posts/${newId}`;
+        const postUrl = `https://satya-check.vercel.app/posts/${newId}`;
         setGeneratedUrl(postUrl);
 
         // Update status for success
