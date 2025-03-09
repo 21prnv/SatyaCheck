@@ -21,8 +21,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { staggerContainer, fadeIn, textVariant } from "@/utils/motion";
+import PopupDialog from '@/components/ui/popup-dialog';
 
 const HeroSection = () => {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -33,8 +36,20 @@ const HeroSection = () => {
       },
     },
   };
+
+  const handleInstallClick = () => {
+    setIsPopupOpen(true);
+  };
+
   return (
     <section className="relative overflow-hidden pt-28 pb-20 md:pt-36 md:pb-32">
+      <PopupDialog
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        title="Extension Under Review"
+        message="The SatyaCheck extension is currently under review by the Chrome Web Store. We're working hard to make it available to you soon. Thank you for your patience and interest in fighting misinformation!"
+      />
+
       {/* Background elements */}
       <div className="absolute inset-0 -z-10">
         {/* Gradient background */}
@@ -134,6 +149,7 @@ const HeroSection = () => {
           >
             <Button
               size="lg"
+              onClick={handleInstallClick}
               className="bg-blue-600 max-w-72  hover:bg-blue-700 text-white md:px-8 md:py-6 py-2 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 flex-1 transform hover:-translate-y-1 relative overflow-hidden group"
             >
               <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-500 to-blue-600 -z-10"></span>

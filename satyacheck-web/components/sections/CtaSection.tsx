@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from 'react';
 import {
   AlertTriangle,
   ArrowRight,
@@ -15,10 +16,24 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import PopupDialog from '@/components/ui/popup-dialog';
 
 const CtaSection = () => {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleDownloadClick = () => {
+    setIsPopupOpen(true);
+  };
+
   return (
     <section className="container mx-auto px-4 py-16 my-16">
+      <PopupDialog
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        title="Extension Under Review"
+        message="The SatyaCheck extension is currently under review by the Chrome Web Store. We're working hard to make it available to you soon. Thank you for your patience and interest in fighting misinformation!"
+      />
+
       <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 rounded-2xl p-10 md:p-14 shadow-xl overflow-hidden relative group">
         {/* Background effects */}
         <div className="absolute inset-0 overflow-hidden opacity-20">
@@ -37,7 +52,10 @@ const CtaSection = () => {
             <span className="font-semibold"> truth from fiction</span>.
           </p>
           <div className="flex flex-col sm:flex-row gap-6">
-            <Button className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 text-lg transform hover:-translate-y-1 group">
+            <Button
+              onClick={handleDownloadClick}
+              className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 text-lg transform hover:-translate-y-1 group"
+            >
               <Download className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
               <span>Download Extension</span>
             </Button>

@@ -5,6 +5,7 @@ import { createClient } from "@/utils/supbase/client";
 import { useRouter } from "next/navigation";
 import ProfileComponent from "@/components/ProfileComponet";
 import { motion } from "framer-motion";
+import { BackButton } from "@/components/ui/back-button";
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState(null);
@@ -58,7 +59,12 @@ export default function ProfilePage() {
       transition={{ duration: 0.5 }}
       className="min-h-screen bg-white"
     >
-      <ProfileComponent user={userData} />
+      <div className="container mx-auto px-4 py-8">
+        <BackButton />
+        <div className="mt-6">
+          <ProfileComponent user={userData} />
+        </div>
+      </div>
     </motion.div>
   );
 }
