@@ -3,12 +3,7 @@
 // Change this import
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import {
-  AlertTriangle,
-  CheckCircle,
-  Info,
-  Shield,
-} from "lucide-react";
+import { AlertTriangle, CheckCircle, Info, Shield } from "lucide-react";
 import { createClient } from "@/utils/supbase/client";
 import { storeUserData } from "./actions/auth";
 import Navbar from "@/components/Navbar";
@@ -118,69 +113,6 @@ export default function Home() {
     }));
   };
 
-  const propagandaNews = [
-    {
-      id: 1,
-      image:
-        "https://i.pinimg.com/474x/83/00/83/8300830b50db7c40459d5c64d248d697.jpg",
-      title: "Misleading Claims About Government Spending",
-      description:
-        "Recent social media posts claiming the government allocated 70% of budget to defense are false. Official records show the actual figure is 14%.",
-      source: "Verified by Satyacheck AI",
-      date: "2 hours ago",
-      category: "Economic",
-      severity: "medium",
-    },
-    {
-      id: 2,
-      image:
-        "https://i.pinimg.com/474x/83/00/83/8300830b50db7c40459d5c64d248d697.jpg",
-      title: "Doctored Video of Political Rally Circulating",
-      description:
-        "A manipulated video showing artificially inflated crowd sizes at a recent political rally has been detected across multiple platforms.",
-      source: "Verified by Satyacheck AI",
-      date: "5 hours ago",
-      category: "Political",
-      severity: "high",
-    },
-    {
-      id: 3,
-      image:
-        "https://i.pinimg.com/474x/83/00/83/8300830b50db7c40459d5c64d248d697.jpg",
-      title: "False Statistics on Vaccination Campaign",
-      description:
-        "Claims about vaccine ineffectiveness using fabricated statistics have been identified. Official health data contradicts these claims.",
-      source: "Verified by Satyacheck AI",
-      date: "1 day ago",
-      category: "Health",
-      severity: "high",
-    },
-    {
-      id: 4,
-      image:
-        "https://i.pinimg.com/474x/83/00/83/8300830b50db7c40459d5c64d248d697.jpg",
-      title: "Misattributed Quote to Opposition Leader",
-      description:
-        "A viral quote allegedly from an opposition leader has been confirmed as fabricated. No record of such statement exists in any official transcript.",
-      source: "Verified by Satyacheck AI",
-      date: "2 days ago",
-      category: "Political",
-      severity: "medium",
-    },
-    {
-      id: 5,
-      image:
-        "https://i.pinimg.com/474x/83/00/83/8300830b50db7c40459d5c64d248d697.jpg",
-      title: "Misattributed Quote to Opposition Leader",
-      description:
-        "A viral quote allegedly from an opposition leader has been confirmed as fabricated. No record of such statement exists in any official transcript.",
-      source: "Verified by Satyacheck AI",
-      date: "2 days ago",
-      category: "Political",
-      severity: "medium",
-    },
-  ];
-
   // Add these state variables at the top with your other states
   const [statsData, setStatsData] = useState({
     propagandaCount: 0,
@@ -197,33 +129,27 @@ export default function Home() {
     const { data: fakeNews } = await supabase
       .from("news")
       .select("*")
-      .eq("isFake", false);
+      .eq("isFake", "true");
 
     // Get active users count
     const { data: users } = await supabase.from("user").select("*");
 
-    // Get accuracy rate
-    const { data: allNews } = await supabase
-      .from("news")
-      .select("isFake,fake_percentage,real_percentage");
+    // Get accuracy rate based on isFake being false
+    const { data: allNews } = await supabase.from("news").select("isFake");
 
     const totalNews = allNews?.length || 0;
-    const correctPredictions =
-      allNews?.filter(
-        (news) =>
-          (news.isFake === true && news.real_percentage > 50) ||
-          (news.isFake === false && news.real_percentage < 50)
-      ).length || 0;
+    const genuineNews =
+      allNews?.filter((news) => news.isFake === "false").length || 0;
 
     const accuracyPercentage = totalNews
-      ? ((correctPredictions / totalNews) * 100).toFixed(1)
+      ? ((genuineNews / totalNews) * 100).toFixed(1)
       : 0;
 
     // Get verified sources count
     const { data: verifiedSources } = await supabase
       .from("news")
       .select("*")
-      .eq("author_verified", true);
+      .eq("author_verified", "true");
 
     setStatsData({
       propagandaCount: fakeNews?.length || 0,

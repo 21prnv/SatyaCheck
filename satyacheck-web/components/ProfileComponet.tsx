@@ -6,7 +6,6 @@ import { useState } from "react";
 import Image from "next/image";
 
 export default function ProfileComponent({ user }: { user: any }) {
-  const [activeTab, setActiveTab] = useState("profile");
   const router = useRouter();
   const supabase = createClient();
 
@@ -26,10 +25,10 @@ export default function ProfileComponent({ user }: { user: any }) {
               alt="Profile"
               width={100}
               height={100}
-              className="rounded-full border-2 border-primary"
+              className="rounded-full border-2 border-blue-500"
             />
           ) : (
-            <div className="w-[100px] h-[100px] rounded-full border-2 border-primary bg-primary flex items-center justify-center">
+            <div className="w-[100px] h-[100px] rounded-full border-2 border-blue-500 bg-blue-500 flex items-center justify-center">
               <span className="text-4xl font-bold text-white">
                 {user.name?.charAt(0).toUpperCase()}
               </span>
@@ -41,73 +40,24 @@ export default function ProfileComponent({ user }: { user: any }) {
         </div>
 
         <div className="mt-6 border-t">
-          <div className="flex gap-4 mt-4">
+          <div className="mt-6 space-y-4">
+            <div>
+              <h3 className="font-semibold">Name</h3>
+              <p>{user.name}</p>
+            </div>
+            <div>
+              <h3 className="font-semibold">Email</h3>
+              <p>{user.email}</p>
+            </div>
             <button
-              onClick={() => setActiveTab("profile")}
-              className={`px-4 py-2 rounded ${
-                activeTab === "profile"
-                  ? "bg-primary text-white"
-                  : "bg-gray-200"
-              }`}
+              onClick={handleSignOut}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 cursor-pointer"
             >
-              Profile
+              Logout
             </button>
-            <button
-              onClick={() => setActiveTab("saved")}
-              className={`px-4 py-2 rounded ${
-                activeTab === "saved" ? "bg-primary text-white" : "bg-gray-200"
-              }`}
-            >
-              Saved News
-            </button>
-          </div>
-
-          <div className="mt-6">
-            {activeTab === "profile" ? (
-              <div className="space-y-4">
-                <div>
-                  <h3 className="font-semibold">Name</h3>
-                  <p>{user.name}</p>
-                </div>
-                <div>
-                  <h3 className="font-semibold">Email</h3>
-                  <p>{user.email}</p>
-                </div>
-                <button
-                  onClick={handleSignOut}
-                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <SavedNews userId={user.id} />
-            )}
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function SavedNews({ userId }: { userId: string }) {
-  const [savedNews, setSavedNews] = useState([]);
-
-  // Implement fetching saved news from your database
-  // You'll need to create a new table for saved news in Supabase
-  // and fetch it here
-
-  return (
-    <div className="space-y-4">
-      {savedNews.length === 0 ? (
-        <p>No saved news articles yet.</p>
-      ) : (
-        savedNews.map((news: any) => (
-          <div key={news.id} className="border p-4 rounded">
-            {/* Display saved news content */}
-          </div>
-        ))
-      )}
     </div>
   );
 }

@@ -21,6 +21,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@/utils/supbase/client";
+import { toast } from "sonner";
 
 // Initialize Supabase client
 
@@ -50,6 +51,7 @@ interface NewsItem {
   upvotes: number;
   votes: string[];
   title?: string;
+  url?: string;
   image?: string;
 }
 
@@ -121,6 +123,7 @@ export default function PostDetailPage() {
                 : data.cross_check_sources || [],
             title: data.title || "News Verification Report", // Default title
             image: data.image || "/fact-check-default.jpg", // Default image
+            url: data.url || null,
           };
 
           setPost(postData);
@@ -211,6 +214,19 @@ export default function PostDetailPage() {
     };
   }, [id, currentUser]);
 
+  const handleOpenSource = () => {
+    if (post?.url != null) {
+      window.open(post.url, "_blank");
+    } else {
+      toast.error("Source URL not found", {
+        style: {
+          backgroundColor: "#f44336",
+          color: "white",
+        },
+      });
+    }
+  };
+
   const handleGoBack = () => {
     router.back();
   };
@@ -289,8 +305,14 @@ export default function PostDetailPage() {
     const currentUrl = window.location.href;
     await navigator.clipboard.writeText(currentUrl);
 
-    // Optional: Add a visual feedback like a toast notification
-    alert("Link copied to clipboard!");
+    // Show a toast notification using sonner
+
+    toast.success("Link copied to clipboard!", {
+      style: {
+        backgroundColor: "blue",
+        color: "white",
+      },
+    });
   };
 
   const handleSave = () => {
@@ -404,7 +426,11 @@ export default function PostDetailPage() {
       <div className="relative w-full h-80 mb-8 rounded-xl overflow-hidden">
         <div className="relative w-full h-full">
           <Image
-            src={post.image || "/placeholder.svg"}
+            src={
+              post.isFake === "true"
+                ? "https://i.pinimg.com/736x/6c/c0/08/6cc0087776f947c54ab23d9526898cfb.jpg"
+                : "https://i.pinimg.com/736x/8b/46/0a/8b460ad19de8a97577b341308c368870.jpg"
+            }
             alt={post.title || "News verification"}
             layout="fill"
             objectFit="cover"
@@ -469,13 +495,13 @@ export default function PostDetailPage() {
           <ul className="space-y-2">
             {post.cross_check_sources.map((source, index) => (
               <li key={index}>
-                <a
-                  href={source}
+                <p
+                  // href={source}
                   className="text-blue-600 hover:text-blue-800 hover:underline flex items-center"
                 >
                   <span className="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
                   {source}
-                </a>
+                </p>
               </li>
             ))}
           </ul>
@@ -489,11 +515,15 @@ export default function PostDetailPage() {
         <div className="flex space-x-4">
           <Button
             variant={isUpvoted ? "default" : "outline"}
-            className={isUpvoted ? "bg-blue-600 text-white" : "text-blue-600"}
+            className={
+              isUpvoted
+                ? "bg-blue-600 text-white cursor-pointer"
+                : "text-blue-600 cursor-pointer"
+            }
             onClick={handleUpvote}
           >
             <ThumbsUp className="h-4 w-4 mr-2" />
-            Upvote ({upvoteCount})
+            Upvote {upvoteCount}
           </Button>
 
           <Button
@@ -501,14 +531,24 @@ export default function PostDetailPage() {
             onClick={() => document.getElementById("comment-textarea")?.focus()}
           >
             <MessageSquare className="h-4 w-4 mr-2" />
-            Comment ({comments.length})
+            Comment {comments.length}
+          </Button>
+
+          {/* New Source button */}
+          <Button
+            variant="outline"
+            className="text-green-600 cursor-pointer"
+            onClick={handleOpenSource}
+          >
+            <Link className="h-4 w-4 mr-2" />
+            Source
           </Button>
         </div>
 
         <div className="flex space-x-2">
           <Button
             variant="outline"
-            className="text-gray-600"
+            className="text-gray-600 cursor-pointer"
             onClick={handleShare}
           >
             <Share className="h-4 w-4 mr-2" />
@@ -520,7 +560,7 @@ export default function PostDetailPage() {
       {/* Comment section */}
       <div>
         <h3 className="text-xl font-semibold text-gray-900 mb-4">
-          Comments ({comments.length})
+          Comments {comments.length}
         </h3>
 
         {/* Comment input */}
@@ -550,7 +590,15 @@ export default function PostDetailPage() {
                 value={comment}
                 onChange={handleCommentChange}
               />
-              <Button onClick={handleCommentSubmit} disabled={!comment.trim()}>
+              <Button
+                onClick={handleCommentSubmit}
+                disabled={!comment.trim()}
+                className={
+                  !comment.trim()
+                    ? "bg-gray-400 mt-1"
+                    : "bg-blue-600 text-white mt-1"
+                }
+              >
                 <Send className="h-4 w-4 mr-2" />
                 Comment
               </Button>

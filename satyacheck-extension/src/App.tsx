@@ -8,9 +8,8 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
-import { createSupabaseClient } from '@/utils/supabaseClient';
+import { createSupabaseClient } from "@/utils/supabaseClient";
 import { toast } from "sonner";
-
 
 interface NewsEntry {
   isFake: string;
@@ -23,11 +22,11 @@ interface NewsEntry {
   subject_expertise: string;
   media_presence: string;
   cross_check_sources: string[];
+  url: string;
 }
 
-
 export default function App() {
-  const { scrapedData, status, scrapeWebsite } = useChromeMessaging();
+  const { scrapedData, status, scrapeWebsite, url } = useChromeMessaging();
   const [analysisSteps, setAnalysisSteps] = useState<string[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
@@ -54,13 +53,13 @@ export default function App() {
   }, [status.type]);
 
   const handleShareToNews = async () => {
-    if (!scrapedData) return;
-  
+    if (!scrapedData || !url) return;
+
     setIsSaving(true);
-    
+
     try {
       const supabase = await createSupabaseClient();
-  
+
       const newsEntry: NewsEntry = {
         isFake: scrapedData.fake.toString(),
         fake_percentage: scrapedData.fake_percentage,
@@ -71,30 +70,30 @@ export default function App() {
         post_date: scrapedData.post_date,
         subject_expertise: scrapedData.subject_expertise,
         media_presence: scrapedData.media_presence.toString(),
-        cross_check_sources: scrapedData.cross_check_sources
+        cross_check_sources: scrapedData.cross_check_sources,
+        url: url,
       };
-  
+
       const { data, error } = await supabase
-        .from('news')
+        .from("news")
         .insert([newsEntry])
         .select();
-  
+
       if (error) throw error;
-  
+
       if (data && data.length > 0) {
         const newId = data[0].id;
         const postUrl = `http://localhost:3000/posts/${newId}`;
         setGeneratedUrl(postUrl);
-        
+
         // Update status for success
-        status.type = 'success';
-        status.message = 'Successfull!';
+        status.type = "success";
+        status.message = "Successfull!";
       }
-  
     } catch (error) {
-      console.error('Error saving to Supabase:', error);
-      status.type = 'error';
-      status.message = 'Failed to share to news database';
+      console.error("Error saving to Supabase:", error);
+      status.type = "error";
+      status.message = "Failed to share to news database";
     } finally {
       setIsSaving(false);
     }
@@ -142,7 +141,10 @@ export default function App() {
                 </motion.div>
                 Satya Check AI
               </div>
-              <Badge variant="secondary" className="bg-white/20 text-white hover:bg-white/30">
+              <Badge
+                variant="secondary"
+                className="bg-white/20 text-white hover:bg-white/30"
+              >
                 v1.0
               </Badge>
             </CardTitle>
@@ -220,14 +222,22 @@ export default function App() {
                 <div className="grid grid-cols-2 gap-2">
                   <Card className="border border-emerald-100 bg-emerald-50/30">
                     <CardContent className="p-2">
-                      <p className="text-xs font-medium text-emerald-700">Authenticity</p>
-                      <p className="text-lg font-bold text-emerald-600">{scrapedData.real_percentage}%</p>
+                      <p className="text-xs font-medium text-emerald-700">
+                        Authenticity
+                      </p>
+                      <p className="text-lg font-bold text-emerald-600">
+                        {scrapedData.real_percentage}%
+                      </p>
                     </CardContent>
                   </Card>
                   <Card className="border border-rose-100 bg-rose-50/30">
                     <CardContent className="p-2">
-                      <p className="text-xs font-medium text-rose-700">Misinformation</p>
-                      <p className="text-lg font-bold text-rose-600">{scrapedData.fake_percentage}%</p>
+                      <p className="text-xs font-medium text-rose-700">
+                        Misinformation
+                      </p>
+                      <p className="text-lg font-bold text-rose-600">
+                        {scrapedData.fake_percentage}%
+                      </p>
                     </CardContent>
                   </Card>
                 </div>
@@ -239,44 +249,46 @@ export default function App() {
                       Key Findings
                     </h3>
                     <div className="text-sm text-gray-600 space-y-1">
-                      {scrapedData.explanation.split('\n').map((point, index) => (
-                        point.trim() && (
-                          <div key={index} className="flex items-start gap-2">
-                            <span className="text-blue-600 mt-1">•</span>
-                            <p>{point.trim()}</p>
-                          </div>
-                        )
-                      ))}
+                      {scrapedData.explanation.split("\n").map(
+                        (point, index) =>
+                          point.trim() && (
+                            <div key={index} className="flex items-start gap-2">
+                              <span className="text-blue-600 mt-1">•</span>
+                              <p>{point.trim()}</p>
+                            </div>
+                          )
+                      )}
                     </div>
                   </CardContent>
                 </Card>
 
                 {/* Related Links */}
-                {scrapedData.related_links && scrapedData.related_links.length > 0 && (
-                  <Card className="border border-gray-100">
-                    <CardContent className="p-3">
-                      <h3 className="text-sm font-semibold text-gray-800 mb-2">
-                        Related Sources
-                      </h3>
-                      <div className="flex flex-wrap gap-1.5">
-                        {scrapedData.related_links.map((link, index) => (
-                          <motion.a
-                            key={index}
-                            href={link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100"
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                          >
-                            <ExternalLink className="w-3 h-3 mr-1" />
-                            Source {index + 1}
-                          </motion.a>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
+                {scrapedData.related_links &&
+                  scrapedData.related_links.length > 0 && (
+                    <Card className="border border-gray-100">
+                      <CardContent className="p-3">
+                        <h3 className="text-sm font-semibold text-gray-800 mb-2">
+                          Related Sources
+                        </h3>
+                        <div className="flex flex-wrap gap-1.5">
+                          {scrapedData.related_links.map((link, index) => (
+                            <motion.a
+                              key={index}
+                              href={link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100"
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              <ExternalLink className="w-3 h-3 mr-1" />
+                              Source {index + 1}
+                            </motion.a>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
 
                 {/* Share Button or Link Section */}
                 <div className="flex justify-end">
@@ -299,7 +311,7 @@ export default function App() {
                       <button
                         onClick={() => {
                           navigator.clipboard.writeText(generatedUrl);
-                          toast.success('Link copied!');
+                          toast.success("Link copied!");
                         }}
                         className="text-blue-600 hover:text-blue-700 text-sm font-medium"
                       >

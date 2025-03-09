@@ -42,7 +42,7 @@ export function AuthButton() {
       <Button
         variant="ghost"
         onClick={() => router.push("/profile")}
-        className="flex items-center gap-2 hover:bg-blue-50"
+        className="flex items-center gap-2 hover:bg-blue-50 cursor-pointer"
       >
         {user.avatar ? (
           <Image
@@ -50,10 +50,10 @@ export function AuthButton() {
             alt="Profile"
             width={32}
             height={32}
-            className="rounded-full"
+            className="rounded-full cursor-pointer"
           />
         ) : (
-          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center cursor-pointer">
             <span className="text-sm font-bold text-white">
               {user.name?.charAt(0).toUpperCase()}
             </span>
@@ -69,7 +69,7 @@ export function AuthButton() {
       variant="outline"
       onClick={handleGoogleLogin}
       disabled={isLoading}
-      className="w-full sm:w-auto px-6 py-3 rounded-lg border-2 border-gray-200 bg-white text-gray-800 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm flex items-center justify-center gap-3"
+      className=" sm:w-auto px-3 py-3 rounded-lg border-2 border-gray-200 bg-white text-gray-800 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm flex items-center justify-center gap-3"
     >
       <svg className="h-5 w-5" viewBox="0 0 24 24">
         <path
@@ -90,7 +90,7 @@ export function AuthButton() {
         />
       </svg>
       <span className="font-medium">
-        {isLoading ? "Signing in..." : "Sign in with Google"}
+        {isLoading ? "Signing in..." : "Sign In"}
       </span>
       {isLoading && (
         <svg

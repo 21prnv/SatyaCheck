@@ -11,6 +11,7 @@ export const useChromeMessaging = () => {
     type: "idle",
     message: "Ready to analyze",
   });
+  const [currentUrl, setCurrentUrl] = useState<string | null>(null);
 
   // Check if content script is ready when the popup opens
   useEffect(() => {
@@ -104,6 +105,9 @@ export const useChromeMessaging = () => {
           if (response && response.data) {
             const { timestamp, url, ...filteredData } = response.data;
 
+            // Store the URL in state
+            setCurrentUrl(url);
+
             // Send the scraped data to Gemini
             const geminiResponse = await analyzeContentWithGemini(filteredData);
 
@@ -135,6 +139,7 @@ export const useChromeMessaging = () => {
     contentScriptReady,
     scrapedData,
     status,
-    scrapeWebsite
+    scrapeWebsite,
+    url: currentUrl,
   };
 };

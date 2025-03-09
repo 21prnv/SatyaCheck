@@ -79,24 +79,32 @@ export default function Navbar() {
               onClick={() => handleNavigation(item.path)}
               className="relative px-4 py-2 group"
             >
-              <span className={`text-sm font-medium transition-colors duration-200 ${
-                activeSection === item.path ? "text-blue-600" : "text-gray-600 hover:text-blue-600"
-              }`}>
+              <span
+                className={`text-sm font-medium transition-colors duration-200 ${
+                  activeSection === item.path
+                    ? "text-blue-600"
+                    : "text-gray-600 hover:text-blue-600"
+                }`}
+              >
                 {item.name}
-                <span className={`absolute -bottom-0.5 left-4 right-4 h-0.5 bg-blue-600 transform origin-left transition-transform duration-300 ${
-                  activeSection === item.path ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                }`} />
+                <span
+                  className={`absolute -bottom-0.5 left-4 right-4 h-0.5 bg-blue-600 transform origin-left transition-transform duration-300 ${
+                    activeSection === item.path
+                      ? "scale-x-100"
+                      : "scale-x-0 group-hover:scale-x-100"
+                  }`}
+                />
               </span>
             </button>
           ))}
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <AuthButton />
 
           <Button
             onClick={toggleMobileMenu}
-            className="md:hidden p-2 rounded-md text-gray-500 hover:text-blue-600 hover:bg-blue-50 focus:outline-none transition-colors duration-300"
+            className="md:hidden p-2 rounded-md text-white bg-blue-600  hover:text-blue-600 hover:bg-blue-50 focus:outline-none transition-colors duration-300"
             aria-label="Toggle menu"
           >
             <Menu className="h-6 w-6" />
@@ -119,16 +127,26 @@ export default function Navbar() {
             >
               <ChevronRight
                 className={`h-4 w-4 mr-2 transition-opacity duration-300 ${
-                  activeSection === item.path ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                  activeSection === item.path
+                    ? "opacity-100"
+                    : "opacity-0 group-hover:opacity-100"
                 }`}
               />
-              <span className={`font-medium transition-colors duration-200 relative ${
-                activeSection === item.path ? "text-blue-600" : "text-gray-600 hover:text-blue-600"
-              }`}>
+              <span
+                className={`font-medium transition-colors duration-200 relative ${
+                  activeSection === item.path
+                    ? "text-blue-600"
+                    : "text-gray-600 hover:text-blue-600"
+                }`}
+              >
                 {item.name}
-                <span className={`absolute -bottom-0.5 left-0 right-0 h-0.5 bg-blue-600 transform origin-left transition-transform duration-300 ${
-                  activeSection === item.path ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                }`} />
+                <span
+                  className={`absolute -bottom-0.5 left-0 right-0 h-0.5 bg-blue-600 transform origin-left transition-transform duration-300 ${
+                    activeSection === item.path
+                      ? "scale-x-100"
+                      : "scale-x-0 group-hover:scale-x-100"
+                  }`}
+                />
               </span>
             </button>
           ))}

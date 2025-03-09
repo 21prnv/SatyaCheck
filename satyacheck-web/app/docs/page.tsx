@@ -4,7 +4,16 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Book, Code, Shield, Zap, Server, Cpu, Rocket } from "lucide-react";
+import {
+  ArrowLeft,
+  Book,
+  Code,
+  Shield,
+  Zap,
+  Server,
+  Cpu,
+  Rocket,
+} from "lucide-react";
 import Link from "next/link";
 
 export default function Docs() {
@@ -57,7 +66,7 @@ export default function Docs() {
         </Card>
       </div>
 
-      <div className="container mx-auto py-8 px-4 max-w-4xl xl:ml-64">
+      <div className="container mx-auto py-8 px-4 max-w-4xl xl:ml-64 mt-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -65,7 +74,7 @@ export default function Docs() {
           className="space-y-8"
         >
           <div className="text-center mb-12">
-            <motion.h1 
+            <motion.h1
               className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-violet-600 text-transparent bg-clip-text"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -74,7 +83,8 @@ export default function Docs() {
               Satya Check AI Documentation
             </motion.h1>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Complete technical documentation and guide for the Satya Check AI Chrome extension
+              Complete technical documentation and guide for the Satya Check AI
+              Chrome extension
             </p>
           </div>
 
@@ -88,15 +98,32 @@ export default function Docs() {
                 </h2>
                 <div className="space-y-4">
                   <p className="text-gray-600 text-lg leading-relaxed">
-                    Satya Check AI is an advanced Chrome extension designed to combat misinformation and propaganda in web content. Leveraging Google's Gemini AI technology, it provides real-time analysis of web pages, helping users verify the authenticity of online content through sophisticated natural language processing and machine learning algorithms.
+                    Satya Check AI is an advanced Chrome extension designed to
+                    combat misinformation and propaganda in web content.
+                    Leveraging Google's Gemini AI technology, it provides
+                    real-time analysis of web pages, helping users verify the
+                    authenticity of online content through sophisticated natural
+                    language processing and machine learning algorithms.
                   </p>
                   <div className="flex flex-wrap gap-2 mt-4">
-                    <Badge variant="outline" className="px-3 py-1">Next.js</Badge>
-                    <Badge variant="outline" className="px-3 py-1">TypeScript</Badge>
-                    <Badge variant="outline" className="px-3 py-1">Tailwind CSS</Badge>
-                    <Badge variant="outline" className="px-3 py-1">Framer Motion</Badge>
-                    <Badge variant="outline" className="px-3 py-1">Supabase</Badge>
-                    <Badge variant="outline" className="px-3 py-1">Google Gemini AI</Badge>
+                    <Badge variant="outline" className="px-3 py-1">
+                      Next.js
+                    </Badge>
+                    <Badge variant="outline" className="px-3 py-1">
+                      TypeScript
+                    </Badge>
+                    <Badge variant="outline" className="px-3 py-1">
+                      Tailwind CSS
+                    </Badge>
+                    <Badge variant="outline" className="px-3 py-1">
+                      Framer Motion
+                    </Badge>
+                    <Badge variant="outline" className="px-3 py-1">
+                      Supabase
+                    </Badge>
+                    <Badge variant="outline" className="px-3 py-1">
+                      Google Gemini AI
+                    </Badge>
                   </div>
                 </div>
               </Card>
@@ -109,35 +136,57 @@ export default function Docs() {
                   <Code className="w-8 h-8 text-violet-500" />
                   Technical Stack
                 </h2>
-                
+
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
-                    <h3 className="text-xl font-semibold mb-4 text-gray-700">Core Technologies</h3>
+                    <h3 className="text-xl font-semibold mb-4 text-gray-700">
+                      Core Technologies
+                    </h3>
                     <div className="space-y-3">
                       <div className="p-4 bg-gray-50 rounded-lg">
-                        <h4 className="font-medium text-gray-800">Frontend Framework</h4>
-                        <p className="text-gray-600">Next.js 14 with TypeScript for type safety and better developer experience</p>
+                        <h4 className="font-medium text-gray-800">
+                          Frontend Framework
+                        </h4>
+                        <p className="text-gray-600">
+                          Next.js 14 with TypeScript for type safety and better
+                          developer experience
+                        </p>
                       </div>
                       <div className="p-4 bg-gray-50 rounded-lg">
-                        <h4 className="font-medium text-gray-800">UI Framework</h4>
-                        <p className="text-gray-600">Custom components built with Tailwind CSS and Radix UI primitives</p>
+                        <h4 className="font-medium text-gray-800">
+                          UI Framework
+                        </h4>
+                        <p className="text-gray-600">
+                          Custom components built with Tailwind CSS and Radix UI
+                          primitives
+                        </p>
                       </div>
                       <div className="p-4 bg-gray-50 rounded-lg">
                         <h4 className="font-medium text-gray-800">Database</h4>
-                        <p className="text-gray-600">Supabase with PostgreSQL for real-time data storage and retrieval</p>
+                        <p className="text-gray-600">
+                          Supabase with PostgreSQL for real-time data storage
+                          and retrieval
+                        </p>
                       </div>
                       <div className="p-4 bg-gray-50 rounded-lg">
                         <h4 className="font-medium text-gray-800">AI Model</h4>
-                        <p className="text-gray-600">Google Gemini 2.0 Flash for advanced natural language processing</p>
+                        <p className="text-gray-600">
+                          Google Gemini 2.0 Flash for advanced natural language
+                          processing
+                        </p>
                       </div>
                     </div>
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-semibold mb-4 text-gray-700">Dependencies & Tools</h3>
+                    <h3 className="text-xl font-semibold mb-4 text-gray-700">
+                      Dependencies & Tools
+                    </h3>
                     <div className="space-y-3">
                       <div className="p-4 bg-gray-50 rounded-lg">
-                        <h4 className="font-medium text-gray-800">Chrome Extension APIs</h4>
+                        <h4 className="font-medium text-gray-800">
+                          Chrome Extension APIs
+                        </h4>
                         <ul className="list-disc list-inside text-gray-600 space-y-1">
                           <li>chrome.runtime</li>
                           <li>chrome.tabs</li>
@@ -146,7 +195,9 @@ export default function Docs() {
                         </ul>
                       </div>
                       <div className="p-4 bg-gray-50 rounded-lg">
-                        <h4 className="font-medium text-gray-800">Key NPM Packages</h4>
+                        <h4 className="font-medium text-gray-800">
+                          Key NPM Packages
+                        </h4>
                         <ul className="list-disc list-inside text-gray-600 space-y-1">
                           <li>@google/generative-ai ^1.0.0</li>
                           <li>@supabase/supabase-js ^2.39.0</li>
@@ -167,14 +218,20 @@ export default function Docs() {
                   <Server className="w-8 h-8 text-emerald-500" />
                   Architecture
                 </h2>
-                
+
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-xl font-semibold mb-4 text-gray-700">Extension Components</h3>
+                    <h3 className="text-xl font-semibold mb-4 text-gray-700">
+                      Extension Components
+                    </h3>
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="p-4 bg-gray-50 rounded-lg">
-                        <h4 className="font-medium text-gray-800 mb-2">Popup Interface (App.tsx)</h4>
-                        <p className="text-gray-600 mb-2">Main extension interface with:</p>
+                        <h4 className="font-medium text-gray-800 mb-2">
+                          Popup Interface (App.tsx)
+                        </h4>
+                        <p className="text-gray-600 mb-2">
+                          Main extension interface with:
+                        </p>
                         <ul className="list-disc list-inside text-gray-600 space-y-1">
                           <li>Real-time content analysis</li>
                           <li>Progress tracking system</li>
@@ -183,8 +240,12 @@ export default function Docs() {
                         </ul>
                       </div>
                       <div className="p-4 bg-gray-50 rounded-lg">
-                        <h4 className="font-medium text-gray-800 mb-2">Background Script</h4>
-                        <p className="text-gray-600 mb-2">Manages extension lifecycle:</p>
+                        <h4 className="font-medium text-gray-800 mb-2">
+                          Background Script
+                        </h4>
+                        <p className="text-gray-600 mb-2">
+                          Manages extension lifecycle:
+                        </p>
                         <ul className="list-disc list-inside text-gray-600 space-y-1">
                           <li>API key management</li>
                           <li>Cross-origin communication</li>
@@ -196,24 +257,46 @@ export default function Docs() {
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-semibold mb-4 text-gray-700">Data Flow Architecture</h3>
+                    <h3 className="text-xl font-semibold mb-4 text-gray-700">
+                      Data Flow Architecture
+                    </h3>
                     <div className="p-4 bg-gray-50 rounded-lg">
                       <div className="space-y-3">
                         <div>
-                          <h4 className="font-medium text-gray-800">1. Content Extraction</h4>
-                          <p className="text-gray-600">Content script injects into web pages and extracts relevant content using DOM APIs</p>
+                          <h4 className="font-medium text-gray-800">
+                            1. Content Extraction
+                          </h4>
+                          <p className="text-gray-600">
+                            Content script injects into web pages and extracts
+                            relevant content using DOM APIs
+                          </p>
                         </div>
                         <div>
-                          <h4 className="font-medium text-gray-800">2. AI Processing</h4>
-                          <p className="text-gray-600">Extracted content is processed by Gemini AI for authenticity analysis</p>
+                          <h4 className="font-medium text-gray-800">
+                            2. AI Processing
+                          </h4>
+                          <p className="text-gray-600">
+                            Extracted content is processed by Gemini AI for
+                            authenticity analysis
+                          </p>
                         </div>
                         <div>
-                          <h4 className="font-medium text-gray-800">3. Data Storage</h4>
-                          <p className="text-gray-600">Results are stored in Supabase for persistence and sharing</p>
+                          <h4 className="font-medium text-gray-800">
+                            3. Data Storage
+                          </h4>
+                          <p className="text-gray-600">
+                            Results are stored in Supabase for persistence and
+                            sharing
+                          </p>
                         </div>
                         <div>
-                          <h4 className="font-medium text-gray-800">4. Result Presentation</h4>
-                          <p className="text-gray-600">Processed data is displayed through the UI with real-time updates</p>
+                          <h4 className="font-medium text-gray-800">
+                            4. Result Presentation
+                          </h4>
+                          <p className="text-gray-600">
+                            Processed data is displayed through the UI with
+                            real-time updates
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -229,13 +312,17 @@ export default function Docs() {
                   <Cpu className="w-8 h-8 text-amber-500" />
                   Core Services
                 </h2>
-                
+
                 <div className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-4">
-                      <h3 className="text-xl font-semibold text-gray-700">Chrome Messaging System</h3>
+                      <h3 className="text-xl font-semibold text-gray-700">
+                        Chrome Messaging System
+                      </h3>
                       <div className="p-4 bg-gray-50 rounded-lg">
-                        <h4 className="font-medium text-gray-800 mb-2">Message Types</h4>
+                        <h4 className="font-medium text-gray-800 mb-2">
+                          Message Types
+                        </h4>
                         <ul className="list-disc list-inside text-gray-600 space-y-1">
                           <li>Content script ready</li>
                           <li>Scrape request</li>
@@ -244,7 +331,9 @@ export default function Docs() {
                         </ul>
                       </div>
                       <div className="p-4 bg-gray-50 rounded-lg">
-                        <h4 className="font-medium text-gray-800 mb-2">State Management</h4>
+                        <h4 className="font-medium text-gray-800 mb-2">
+                          State Management
+                        </h4>
                         <ul className="list-disc list-inside text-gray-600 space-y-1">
                           <li>Content script lifecycle</li>
                           <li>Analysis progress</li>
@@ -254,9 +343,13 @@ export default function Docs() {
                     </div>
 
                     <div className="space-y-4">
-                      <h3 className="text-xl font-semibold text-gray-700">AI Integration</h3>
+                      <h3 className="text-xl font-semibold text-gray-700">
+                        AI Integration
+                      </h3>
                       <div className="p-4 bg-gray-50 rounded-lg">
-                        <h4 className="font-medium text-gray-800 mb-2">Gemini AI Features</h4>
+                        <h4 className="font-medium text-gray-800 mb-2">
+                          Gemini AI Features
+                        </h4>
                         <ul className="list-disc list-inside text-gray-600 space-y-1">
                           <li>Natural language processing</li>
                           <li>Content classification</li>
@@ -265,7 +358,9 @@ export default function Docs() {
                         </ul>
                       </div>
                       <div className="p-4 bg-gray-50 rounded-lg">
-                        <h4 className="font-medium text-gray-800 mb-2">Analysis Pipeline</h4>
+                        <h4 className="font-medium text-gray-800 mb-2">
+                          Analysis Pipeline
+                        </h4>
                         <ul className="list-disc list-inside text-gray-600 space-y-1">
                           <li>Content preprocessing</li>
                           <li>AI model inference</li>
@@ -277,12 +372,16 @@ export default function Docs() {
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-semibold mb-4 text-gray-700">Database Integration</h3>
+                    <h3 className="text-xl font-semibold mb-4 text-gray-700">
+                      Database Integration
+                    </h3>
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="p-4 bg-gray-50 rounded-lg">
-                        <h4 className="font-medium text-gray-800 mb-2">Supabase Schema</h4>
+                        <h4 className="font-medium text-gray-800 mb-2">
+                          Supabase Schema
+                        </h4>
                         <pre className="text-sm text-gray-600 whitespace-pre-wrap">
-{`news {
+                          {`news {
   id: uuid
   title: string
   content: text
@@ -294,7 +393,9 @@ export default function Docs() {
                         </pre>
                       </div>
                       <div className="p-4 bg-gray-50 rounded-lg">
-                        <h4 className="font-medium text-gray-800 mb-2">Data Operations</h4>
+                        <h4 className="font-medium text-gray-800 mb-2">
+                          Data Operations
+                        </h4>
                         <ul className="list-disc list-inside text-gray-600 space-y-1">
                           <li>Real-time subscriptions</li>
                           <li>Row Level Security (RLS)</li>
@@ -311,11 +412,15 @@ export default function Docs() {
             {/* Features Section */}
             <section id="features" className="scroll-mt-16">
               <Card className="p-8 border-l-4 border-l-green-500">
-                <h2 className="text-2xl font-semibold mb-4 text-gray-800">Key Features</h2>
-                
+                <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+                  Key Features
+                </h2>
+
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h3 className="text-xl font-medium mb-3 text-gray-700">Content Analysis</h3>
+                    <h3 className="text-xl font-medium mb-3 text-gray-700">
+                      Content Analysis
+                    </h3>
                     <ul className="list-disc list-inside text-gray-600">
                       <li>Real-time webpage scanning</li>
                       <li>Text content extraction</li>
@@ -325,7 +430,9 @@ export default function Docs() {
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-medium mb-3 text-gray-700">AI Processing</h3>
+                    <h3 className="text-xl font-medium mb-3 text-gray-700">
+                      AI Processing
+                    </h3>
                     <ul className="list-disc list-inside text-gray-600">
                       <li>Authenticity scoring (0-100%)</li>
                       <li>Misinformation detection</li>
@@ -335,7 +442,9 @@ export default function Docs() {
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-medium mb-3 text-gray-700">Result Visualization</h3>
+                    <h3 className="text-xl font-medium mb-3 text-gray-700">
+                      Result Visualization
+                    </h3>
                     <ul className="list-disc list-inside text-gray-600">
                       <li>Score breakdown</li>
                       <li>Color-coded indicators</li>
@@ -345,7 +454,9 @@ export default function Docs() {
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-medium mb-3 text-gray-700">Data Sharing</h3>
+                    <h3 className="text-xl font-medium mb-3 text-gray-700">
+                      Data Sharing
+                    </h3>
                     <ul className="list-disc list-inside text-gray-600">
                       <li>Report generation</li>
                       <li>Shareable links</li>
@@ -360,11 +471,15 @@ export default function Docs() {
             {/* Security & Performance Section */}
             <section id="security" className="scroll-mt-16">
               <Card className="p-8 border-l-4 border-l-red-500">
-                <h2 className="text-2xl font-semibold mb-4 text-gray-800">Security & Performance</h2>
-                
+                <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+                  Security & Performance
+                </h2>
+
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h3 className="text-xl font-medium mb-3 text-gray-700">Security Features</h3>
+                    <h3 className="text-xl font-medium mb-3 text-gray-700">
+                      Security Features
+                    </h3>
                     <ul className="list-disc list-inside text-gray-600">
                       <li>Secure API key storage</li>
                       <li>Protected data transfer</li>
@@ -374,7 +489,9 @@ export default function Docs() {
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-medium mb-3 text-gray-700">Performance Optimizations</h3>
+                    <h3 className="text-xl font-medium mb-3 text-gray-700">
+                      Performance Optimizations
+                    </h3>
                     <ul className="list-disc list-inside text-gray-600">
                       <li>Efficient DOM traversal</li>
                       <li>Optimized state updates</li>
@@ -389,11 +506,15 @@ export default function Docs() {
             {/* Future Enhancements Section */}
             <section id="future" className="scroll-mt-16">
               <Card className="p-8 border-l-4 border-l-purple-500">
-                <h2 className="text-2xl font-semibold mb-4 text-gray-800">Future Enhancements</h2>
-                
+                <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+                  Future Enhancements
+                </h2>
+
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h3 className="text-xl font-medium mb-3 text-gray-700">Planned Features</h3>
+                    <h3 className="text-xl font-medium mb-3 text-gray-700">
+                      Planned Features
+                    </h3>
                     <ul className="list-disc list-inside text-gray-600">
                       <li>Batch analysis support</li>
                       <li>Enhanced AI models</li>
@@ -403,7 +524,9 @@ export default function Docs() {
                   </div>
 
                   <div>
-                    <h3 className="text-xl font-medium mb-3 text-gray-700">Technical Improvements</h3>
+                    <h3 className="text-xl font-medium mb-3 text-gray-700">
+                      Technical Improvements
+                    </h3>
                     <ul className="list-disc list-inside text-gray-600">
                       <li>Performance optimization</li>
                       <li>Enhanced caching</li>
@@ -420,4 +543,3 @@ export default function Docs() {
     </div>
   );
 }
-

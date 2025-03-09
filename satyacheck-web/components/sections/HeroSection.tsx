@@ -130,11 +130,11 @@ const HeroSection = () => {
           {/* CTA Buttons with enhanced animations */}
           <motion.div
             variants={fadeIn("up", "spring", 1.2, 1)}
-            className="flex flex-col sm:flex-row gap-4 w-full max-w-lg justify-center"
+            className="flex flex-col sm:flex-row gap-4 w-full max-w-lg justify-center items-center"
           >
             <Button
               size="lg"
-              className="bg-blue-600 max-w-72  hover:bg-blue-700 text-white px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 flex-1 transform hover:-translate-y-1 relative overflow-hidden group"
+              className="bg-blue-600 max-w-72  hover:bg-blue-700 text-white md:px-8 md:py-6 py-2 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 flex-1 transform hover:-translate-y-1 relative overflow-hidden group"
             >
               <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-500 to-blue-600 -z-10"></span>
               <span className="absolute inset-0 w-0 bg-gradient-to-r from-blue-600 to-blue-800 transition-all duration-300 group-hover:w-full -z-10"></span>
