@@ -21,6 +21,12 @@ SatyaCheck is a comprehensive fact-checking solution that helps users verify the
 
 https://github.com/user-attachments/assets/743afd1e-e576-4a1e-aa21-d41426133d0c
 
+## Get API keys here:
+
+- gemini ai: https://aistudio.google.com/apikey
+- supabase: https://supabase.com/
+
+
 ## Project Structure
 
 ```
