@@ -1,6 +1,6 @@
 ## Disclaimer
 
-This extension will be live in the next 3 days and is currently under review.
+This extension will be live in a few days and as it is currently under review.
 
 # SatyaCheck
 
