@@ -6,6 +6,16 @@ SatyaCheck is a comprehensive fact-checking solution that helps users verify the
 
 ## Demo
 
+
+
+
+
+
+https://github.com/user-attachments/assets/b741352c-05b5-446c-ae22-45232024c388
+
+
+
+
 ## Features
 
 - Real-time content analysis using Google's Gemini AI
