@@ -1,12 +1,10 @@
-## Disclaimer
-
-This extension will be live in a few days and as it is currently under review.
-
 # SatyaCheck
 
 SatyaCheck is a comprehensive fact-checking solution that helps users verify the authenticity of news articles and social media posts. It consists of two main components:
 - A web application (satyacheck-web)
 - A Chrome browser extension (satyacheck-extension)
+
+## Demo
 
 ## Features
 

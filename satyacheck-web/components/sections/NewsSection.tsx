@@ -263,46 +263,6 @@ const NewsSection = ({ news }: NewsProps) => {
             </p>
           </div>
         </div>
-
-        <div className="flex flex-wrap gap-3 bg-white/80 backdrop-blur-sm p-3 rounded-xl shadow-sm border border-gray-100">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Badge className="bg-gradient-to-r from-red-50 to-red-100 text-red-600 py-2 px-4 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 cursor-help border border-red-200/30">
-                  <AlertTriangle className="w-4 h-4 mr-1.5" />
-                  Fake
-                </Badge>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>News verified as fake</p>
-              </TooltipContent>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger>
-                <Badge className="bg-gradient-to-r from-amber-50 to-amber-100 text-amber-600 py-2 px-4 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 cursor-help border border-amber-200/30">
-                  <Shield className="w-4 h-4 mr-1.5" />
-                  Misleading
-                </Badge>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Content requiring further verification</p>
-              </TooltipContent>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger>
-                <Badge className="bg-gradient-to-r from-green-50 to-green-100 text-green-600 py-2 px-4 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 cursor-help border border-green-200/30">
-                  <CheckCircle className="w-4 h-4 mr-1.5" />
-                  Real
-                </Badge>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Verified authentic news</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
       </div>
 
       <motion.div

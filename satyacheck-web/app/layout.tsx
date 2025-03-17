@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,11 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <Script
+              defer
+              data-domain="satya-check.vercel.app" // Replace with your domain
+              src="https://analytics-code.vercel.app/tracking-script.js"
+          />
           <Toaster />
         </ThemeProvider>
       </body>
